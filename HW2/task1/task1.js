@@ -1,5 +1,5 @@
 const myFilter = function(callback, thisArg) {
-    const input = this;
+    const inputArray = this;
 
     if (typeof callback !== 'function') {
         throw new TypeError(`${callback} is not a function`);
@@ -10,7 +10,7 @@ const myFilter = function(callback, thisArg) {
     }
 
 
-    return buildArray(input, callback);
+    return buildArray(inputArray, callback);
 }
 
 function buildArray(input, callback) {
