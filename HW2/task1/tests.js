@@ -58,7 +58,15 @@ describe('myFilter', function() {
     });
 
     it('throw an error with arr1.myFilter()', function() {
-        ASSERT.throws(() => arr1.myFilter(), TypeError);
+        ASSERT.throws(() => {
+            arr1.myFilter();
+        }, TypeError);
+    });
+
+    it('throw an error with {}.myFilter(cb1)', function() {
+        ASSERT.throws(() => {
+            'abc'.myFilter(cb1);
+        }, TypeError);
     });
 });
 
