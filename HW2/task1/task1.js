@@ -8,8 +8,11 @@ const myFilter = function(callback, thisArg) {
     if (typeof callback !== 'function') {
         throw new TypeError(`${callback} is not a function`);
     }
+
+    if (typeof thisArg !== undefined) {
+        callback = callback.bind(thisArg);
+    }
     
-    callback = callback.bind(thisArg);
     return buildArray(inputArray, callback);
 }
 
