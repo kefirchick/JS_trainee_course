@@ -38,7 +38,7 @@ describe('class Calculator', function() {
         }, TypeError);
         ASSERT.throws(() => {
             calculator.setX = Infinity;
-        }, RangeError);
+        }, TypeError);
         ASSERT.throws(() => {
             calculator.setX = NaN;
         }, TypeError);
@@ -50,7 +50,7 @@ describe('class Calculator', function() {
         }, TypeError);
         ASSERT.throws(() => {
             calculator.setY = Infinity;
-        }, RangeError);
+        }, TypeError);
         ASSERT.throws(() => {
             calculator.setY = NaN;
         }, TypeError);

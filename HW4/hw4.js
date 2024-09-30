@@ -17,16 +17,6 @@ class Calculator {
         this.#valY = valY;
     }
 
-    validate(value) {
-        if ( typeof value !== 'number' || Number.isNaN(value) ) {
-            throw TypeError(`${value} is not a number`)
-        }
-
-        if ( !Number.isFinite(value) ) {
-            throw RangeError(`${value} should be finite`)
-        }
-    }
-
     logSum = () => {
         return this.#valX + this.#valY;
     }
@@ -45,5 +35,11 @@ class Calculator {
         } 
 
         return this.#valX / this.#valY;
+    }
+
+    validate(value) {
+        if ( !Number.isFinite(value) ) {
+            throw TypeError(`${value} is not a valud number`)
+        }
     }
 }
