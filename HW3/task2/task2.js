@@ -1,16 +1,16 @@
 function getPersons(name, age) {
     const persons = [];
 
-    validation(name, age);
+    validate(name, age);
 
-    // object constructor
-    const protoPerson = new Object();
+    // object constructor (object literal syntax)
+    const protoPerson = {};
     protoPerson.name = name;
     protoPerson.age = age;
     persons.push(protoPerson);
 
-    // object literal;
-    persons.push( {name, age} );
+    // object deconstruction;
+    persons.push( {...protoPerson} );
 
     // constructor function
     function Person(name, age) {
@@ -40,18 +40,16 @@ function getPersons(name, age) {
     return persons;
 }
 
-function validation(name, age) {
+function validate(name, age) {
     if (name === undefined || age === undefined) {
         throw new Error('Name and age should be defined');
     }
 
-    const personAge = Number(age);
-
-    if (isNaN(age)) {
+    if (typeof age !== 'number' || Number.isNaN(age)) {
         throw new TypeError(`${age} is not a number`);
     }
 
-    if (personAge <= 0 || personAge >= 100) {
+    if (age <= 0 || age >= 100) {
         throw new RangeError(`${age} shoud be from 1 to 100`);
     }
 }

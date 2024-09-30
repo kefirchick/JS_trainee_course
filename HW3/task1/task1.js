@@ -1,11 +1,11 @@
 const obj = {
     set from(value) {
-        const number = numberConvert(value);
+        const number = convertToNumber(value);
         this._from = number;
     },
 
     set to(value) {
-        const number = numberConvert(value);
+        const number = convertToNumber(value);
         this._to = number;
     },
 
@@ -33,7 +33,7 @@ const obj = {
     }
 }
 
-function numberConvert(value) {
+function convertToNumber(value) {
     const number = Number(value);
 
     if (isNaN(number)) {
