@@ -18,7 +18,8 @@ class Stack {
             throw Error('Stack is full');
         }
 
-        this.#elements[this.#top++] = elem;
+        this.#elements[this.#top] = elem;
+        this.#top++;
     }
 
     pop() {
@@ -26,7 +27,8 @@ class Stack {
             throw Error('Stack is empty');
         }
 
-        return this.#elements[--this.#top];
+        this.#top--;
+        return this.#elements[this.#top];
     }
 
     peek() {
