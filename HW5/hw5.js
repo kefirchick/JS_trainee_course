@@ -5,7 +5,7 @@ class Stack {
 
     constructor(maxNumber = 10) {
         if (!Number.isInteger(maxNumber) || maxNumber < 0) {
-            throw TypeError(`${maxNumber} is not a valud number`);
+            throw Error(`${maxNumber} is not a valid number`);
         }
         
         this.#top = 0;
