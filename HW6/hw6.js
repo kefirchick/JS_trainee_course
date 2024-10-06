@@ -1,28 +1,37 @@
 const DEFAULT_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 class DataHandler {
-    #url;
     #data;
+    #url;
 
     constructor(url = DEFAULT_URL) {
         this.#data = new Map();
-        this.#url = url;
+        
+        try {
+            this.#url = new URL(url);
+        } catch (error) {
+            throw new Error(`${url} is not a valid url`);
+        }
     }
 
     async fetchPosts() {
         const response = await fetch(this.#url);
-        
-        if (response.ok) {
-            const data = await response.json();
-            this.#storePosts(data);
-        } else {
-            throw new Error(`HTTP error: ${response.status}`);
+
+        try {
+            if (response.ok) {
+                const data = await response.json();
+                this.#storePosts(data);
+            } else {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+        } catch (error) {
+            throw new Error(`Failed to fetch with the error: ${error}`);
         }
     }
 
     listPosts() {
         if (this.#data.size === 0) {
-            throw Error(`Data is empty`);
+            return null;
         }
 
         const posts = [...this.#data.values()];
@@ -33,11 +42,11 @@ class DataHandler {
 
     getPost(id) {
         if (!Number.isInteger(id) || id < 1) {
-            throw Error(`${id} is not a valid id`);
+            throw TypeError(`${id} is not a valid id`);
         }
 
         if (!this.#data.has(id)) {
-            throw Error(`No post with the id = ${id}`);
+            return null;
         }
 
         return this.#data.get(id);
@@ -48,9 +57,13 @@ class DataHandler {
     }
 
     #storePosts(data) {
+        if (!Array.isArray(data)) {
+            throw TypeError('Expected an array of posts');
+        }
+
         for (const obj of data) {
             if (!obj.id) {
-                throw Error(`Post data reading error`);
+                throw Error('Invalid post data');
             }
 
             this.#data.set(obj.id, obj);
@@ -65,8 +78,14 @@ class DataHandler {
     }
 }
 
-const dataHandler = new DataHandler();
-dataHandler.fetchPosts()
-    .then(
-        () => console.log(dataHandler.getPost(1))
-    )
+// const dataHandler = new DataHandler();
+// dataHandler.fetchPosts()
+//     .then(
+//         () => console.log(dataHandler.listPosts())
+//     )
+//     .then(
+//         () => console.log(dataHandler.getPost(1))
+//     )
+
+// const wrongArdessDataHandler = new DataHandler('https://wrongpagewrongpage.com');
+// wrongArdessDataHandler.fetchPosts();
