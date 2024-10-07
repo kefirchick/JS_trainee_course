@@ -15,17 +15,17 @@ class DataHandler {
     }
 
     async fetchPosts() {
-        const response = await fetch(this.#url);
-
         try {
-            if (response.ok) {
-                const data = await response.json();
-                this.#storePosts(data);
-            } else {
+            const response = await fetch(this.#url);
+
+            if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
             }
+
+            const data = await response.json();
+            this.#storePosts(data);
         } catch (error) {
-            throw new Error(`Failed to fetch with the error: ${error}`);
+            throw new Error(`Failed to fetch with the error: ${error.message}`);
         }
     }
 
@@ -78,8 +78,14 @@ class DataHandler {
     }
 }
 
-// const dataHandler = new DataHandler();
-// dataHandler.fetchPosts()
+const dataHandler = new DataHandler();
+const promise = dataHandler.fetchPosts();
+
+promise.then(
+    () => console.log(dataHandler.getPost(1))
+);
+
+
 //     .then(
 //         () => console.log(dataHandler.listPosts())
 //     )
