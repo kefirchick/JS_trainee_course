@@ -31,7 +31,7 @@ class DataHandler {
 
     listPosts() {
         if (this.#data.size === 0) {
-            return null;
+            return undefined;
         }
 
         const posts = [...this.#data.values()];
@@ -46,7 +46,7 @@ class DataHandler {
         }
 
         if (!this.#data.has(id)) {
-            return null;
+            return undefined;
         }
 
         return this.#data.get(id);
@@ -77,21 +77,3 @@ class DataHandler {
         return str1.localeCompare(str2);
     }
 }
-
-const dataHandler = new DataHandler();
-const promise = dataHandler.fetchPosts();
-
-promise.then(
-    () => console.log(dataHandler.getPost(1))
-);
-
-
-//     .then(
-//         () => console.log(dataHandler.listPosts())
-//     )
-//     .then(
-//         () => console.log(dataHandler.getPost(1))
-//     )
-
-// const wrongArdessDataHandler = new DataHandler('https://wrongpagewrongpage.com');
-// wrongArdessDataHandler.fetchPosts();

@@ -8,20 +8,22 @@ describe('class DataHandler', function() {
     it('constructor', function() {
         ASSERT.throws(() => {
             new DataHandler(123);
-        }, Error);
+        }, Error, '123 is not a valid url');
     });
 
     it(`fetchPosts`, function() {
         const wrongArdessDataHandler = new DataHandler('https://wrongpagewrongpage.com');
+
         return wrongArdessDataHandler.fetchPosts().catch(
             (error) => {
-                ASSERT.equal(error instanceof Error, true);
+                ASSERT.equal(error.message, 'Failed to fetch with the error: Failed to fetch');
             }
         )
     });
 
     it('listPosts', function() {
-        ASSERT.equal(dataHandler.listPosts(), null);
+        ASSERT.equal(dataHandler.listPosts(), undefined);
+
         return promise.then(() => {
                 ASSERT.equal(dataHandler.listPosts()[0].id, 30)
             }
@@ -30,8 +32,9 @@ describe('class DataHandler', function() {
 
     it('getPost', function() {
         ASSERT.throws(() => {
-            dataHandler.getPost('a');
-        }, Error);
+            dataHandler.getPost('abc');
+        }, TypeError, 'abc is not a valid id');
+
         return promise.then(() => {
             ASSERT.equal(dataHandler.getPost(30).userId, 3);
         })
@@ -40,7 +43,7 @@ describe('class DataHandler', function() {
     it('clearPosts', function() {
         return promise.then(() => {
             dataHandler.clearPosts();
-            ASSERT.equal(dataHandler.getPost(1), null);
+            ASSERT.equal(dataHandler.getPost(1), undefined);
         })
     });
 });
