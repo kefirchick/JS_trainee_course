@@ -45,4 +45,46 @@ describe('class Stack', function() {
     });
 });
 
+describe('class List', function() {
+    const list = new List();
+
+    it('isEmpty', function() {
+        ASSERT.equal(list.isEmpty(), true);
+    });
+
+    it('insert', function() {
+        list.insert(1);
+        ASSERT.equal(list.isEmpty(), false);
+    });
+
+    it(`getValue`, function() {
+        ASSERT.equal(list.getValue(), 1);
+    });
+
+    it('prev', function() {
+        list.insert(2);
+        list.toPrev();
+        ASSERT.equal(list.getValue(), 1);
+        ASSERT.throws(() => {
+            list.toPrev();
+        }, RangeError, 'First element of the List');
+    });
+
+    it('next', function() {
+        list.toNext();
+        ASSERT.equal(list.getValue(), 2);
+        ASSERT.throws(() => {
+            list.toNext();
+        }, RangeError, 'Last element of the List');
+    });
+
+    it('delete', function() {
+        list.delete();
+        ASSERT.equal(list.getValue(), 1);
+        list.delete();
+        ASSERT.equal(list.getValue(), null);
+    });
+
+});
+
 mocha.run();

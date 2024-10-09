@@ -4,8 +4,8 @@ class Node {
 
     constructor(value, prev = null, next = null) {
         this.value = value;
-        this.prev = prev;
-        this.next = prev;
+        this.#prev = prev;
+        this.#next = next;
     }
 
     set prev(node) {
@@ -54,7 +54,7 @@ class Stack {
 
     push(value) {
         if (this.#size === this.#maxSize) {
-            throw new Error('Stack is full');
+            throw new RangeError('Stack is full');
         }
 
         this.#size++;
@@ -63,7 +63,7 @@ class Stack {
 
     pop() {
         if (this.isEmpty()) {
-            throw new Error('Stack is empty');
+            throw new RangeError('Stack is empty');
         }
         
         this.#size--;
@@ -74,11 +74,7 @@ class Stack {
     }
 
     peek() {
-        if (this.isEmpty()) {
-            return null;
-        } else {
-            return this.#top.value;
-        }
+        return this.#top?.value ?? null;
     }
 
     isEmpty() {
@@ -94,7 +90,7 @@ class Stack {
             pos = pos.prev;
         }
 
-        return array.reverse().slice();
+        return array.reverse();
     }
 
     static fromIterable(iterable) {
@@ -109,5 +105,69 @@ class Stack {
         }
 
         return newStack;
+    }
+}
+
+class List {
+    #current;
+
+    constructor() {        
+        this.#current = null;
+    }
+
+    insert(value) {
+        const node = new Node(value, this.#current, this.#current?.next);
+
+        if (!this.isEmpty()) {
+            if (this.#current.next) {
+                this.#current.next.prev = node;
+            }
+            
+            this.#current.next = node;
+        }
+
+        this.#current = node;
+    }
+
+    delete() {
+        if (this.isEmpty()) {
+            throw new Error('List is empty');
+        }
+
+        const {prev, next} = this.#current;
+
+        if (prev) {
+            prev.next = next;
+        }
+
+        if (next) {
+            next.prev = prev;
+        } 
+    
+        this.#current = next ?? prev;
+    }
+
+    getValue() {
+        return this.#current?.value || null;
+    }
+
+    toNext() {
+        if (this.#current?.next) {
+            this.#current = this.#current.next;
+        } else {
+            throw new RangeError('Last element of the List');
+        }
+    }
+
+    toPrev() {
+        if (this.#current?.prev) {
+            this.#current = this.#current.prev;
+        } else {
+            throw new RangeError('First element of the List');
+        }
+    }
+
+    isEmpty() {
+        return this.#current === null;
     }
 }
