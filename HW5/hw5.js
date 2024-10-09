@@ -1,55 +1,105 @@
-class Stack {
-    #top;
-    #maxNumber;
-    #elements;
+class Node {
+    #prev;
+    #next;
 
-    constructor(maxNumber = 10) {
-        if (!Number.isInteger(maxNumber) || maxNumber < 0) {
-            throw Error(`${maxNumber} is not a valid number`);
-        }
-        
-        this.#top = 0;
-        this.#maxNumber = maxNumber;
-        this.#elements = [];
+    constructor(value, prev = null, next = null) {
+        this.value = value;
+        this.prev = prev;
+        this.next = prev;
     }
 
-    push(elem) {
-        if (this.#top === this.#maxNumber) {
-            throw Error('Stack is full');
+    set prev(node) {
+        if (!this.#isNodeValid(node)) {
+            throw new Error(`${node} isn't a valid node`);
         }
 
-        this.#elements[this.#top] = elem;
-        this.#top++;
+        this.#prev = node;
+    }
+
+    get prev() {
+        return this.#prev;
+    }
+    
+    set next(node) {
+        if (!this.#isNodeValid(node)) {
+            throw new Error(`${node} isn't a valid node`);
+        }
+
+        this.#next = node;
+    }
+
+    get next() {
+        return this.#next;
+    }
+
+    #isNodeValid(node) {
+        return (node instanceof Node) || (node === null);
+    }
+}
+
+class Stack {
+    #top;
+    #size;
+    #maxSize;
+
+    constructor(maxSize = 10) {
+        if (!Number.isInteger(maxSize) || maxSize < 0) {
+            throw new Error(`${maxSize} is not a valid number`);
+        }
+        
+        this.#top = null;
+        this.#size = 0;
+        this.#maxSize = maxSize;
+    }
+
+    push(value) {
+        if (this.#size === this.#maxSize) {
+            throw new Error('Stack is full');
+        }
+
+        this.#size++;
+        this.#top = new Node(value, this.#top);
     }
 
     pop() {
         if (this.isEmpty()) {
-            throw Error('Stack is empty');
+            throw new Error('Stack is empty');
         }
+        
+        this.#size--;
+        const topValue = this.#top.value;
+        this.#top = this.#top.prev;
 
-        this.#top--;
-        return this.#elements[this.#top];
+        return topValue;
     }
 
     peek() {
         if (this.isEmpty()) {
             return null;
         } else {
-            return this.#elements[this.#top - 1];
+            return this.#top.value;
         }
     }
 
     isEmpty() {
-        return this.#top === 0;
+        return this.#size === 0;
     }
 
     toArray() {
-        return this.#elements.slice();
+        const array = [];
+        
+        let pos = this.#top;
+        while (pos) {
+            array.push(pos.value);
+            pos = pos.prev;
+        }
+
+        return array.reverse().slice();
     }
 
     static fromIterable(iterable) {
         if (!iterable || typeof iterable[Symbol.iterator] !== 'function') {
-            throw new TypeError(`${iterable} is not iterable`);
+            throw new Error(`${iterable} is not iterable`);
         }
 
         const newStack = new Stack(iterable.length);
