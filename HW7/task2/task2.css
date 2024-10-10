@@ -1,0 +1,82 @@
+:root {
+    --darkblue-color: #1D1D3A;
+    --blue-color: #29297A;
+    --light-color: #C2A7D7;
+    --cyan-color: #842A67;
+    --darkcyan-color: #2C1725;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    height: 100%;
+}
+
+.numbers {
+    font-family: "Wallpoet", sans-serif;
+    font-size: 100px;
+    color: var(--light-color);
+    text-align: center;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    font-family: "Jura", sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--light-color);
+    margin: 10px;
+}
+
+input {
+    font-family: "Jura", sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    border: none;
+    color: var(--light-color);
+    background-color: var(--blue-color);
+    margin: 10px;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Remove in Chrome, Safari */
+    margin: 0; /* Prevent layout issues */
+}
+
+.styled-number-input[type=number] {
+    -moz-appearance: textfield; /* Remove in Firefox */
+}
+
+.timer {
+    background-color: var(--darkblue-color);
+    display: inline-block;
+    width: 50%;
+}
+
+.timer .button {
+    background-color: var(--blue-color);
+}
+
+.stopwatch {
+    background-color: var(--darkcyan-color);
+    display: inline-block;
+    width: 50%;
+}
+
+.stopwatch .button {
+    background-color: var(--cyan-color);
+}
