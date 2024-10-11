@@ -22,10 +22,12 @@ body {
 }
 
 .numbers {
-    font-family: "Wallpoet", sans-serif;
+    font-family: "Kode Mono", monospace;
+    font-weight: bold;
     font-size: 100px;
     color: var(--light-color);
     text-align: center;
+    margin: 50px;
 }
 
 .controls {
@@ -35,20 +37,30 @@ body {
 
 .button {
     font-family: "Jura", sans-serif;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: bold;
     color: var(--light-color);
+    text-align: center;
     margin: 10px;
+    padding: 5px;
+    width: 120px;
+}
+
+.button:hover {
+    cursor: pointer;
 }
 
 input {
     font-family: "Jura", sans-serif;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: bold;
+    color: var(--darkcyan-color);
+    text-align: center;
     border: none;
-    color: var(--light-color);
-    background-color: var(--blue-color);
+    background-color: var(--light-color);
     margin: 10px;
+    padding: 5px;
+    width: 120px;
 }
 
 input::-webkit-inner-spin-button,
