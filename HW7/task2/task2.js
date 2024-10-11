@@ -44,7 +44,7 @@ class StopwatchController {
     }
 
     tick() {
-        if (this._time === 3600) {
+        if (this._time === 3599) {
             this.stop();
         }
 
@@ -53,19 +53,76 @@ class StopwatchController {
     }
 }
 
-const stopwatch = new StopwatchController()
+class InputHandler {
+    constructor(inputElement) {
+        this._inputElement = inputElement;
+        this._lastValue = 59;
+        inputElement.value = 59;
+        inputElement.addEventListener('input', () => {
+            this.checkInput();
+        });
+    }
+
+    checkInput() {
+        const inputText = this._inputElement.value;
+        const inputValue = Number(inputText);
+        
+        if (this.isValid(inputValue)) {
+            this._lastValue = inputValue;
+        } else {
+            this._inputElement.value = this._lastValue;
+        }
+    }
+
+    isValid(number) {
+        return Number.isInteger(number) && number >= 0 && number < 60;
+    }
+
+    getValue() {
+        return this._lastValue;
+    }
+}
+
+const input = document.getElementById('input-minutes');
+const inputHandler = new InputHandler(input);
+
+// class TimerController {
+//     constructor() {
+//         const displayElement = document.getElementById('timer-value');
+//         this._display = new TimeDisplay(displayElement);
+//         this._time = 0;
+//         this._timerId = null;
+//         this._inputMin = document.getElementById('timer-value');
+//         this._inputSec = document.getElementById('timer-value');
+//         this._inputMinValue = 60;
+//         this._inputSecValue = 00;
+//     }
+
+//     handleInputMin() {
+//         const inputText = this._inputMin.textContent;
+//         const inputValue = Number(inputText);
+        
+//         if (Number.isInteger(inputText) && inputValue >= 0 && inputValue <= 60) {
+//             this._inputMinValue = 
+//         }
+//     }
+// }
+
+
+
+const stopwatch = new StopwatchController();
 
 document.addEventListener('click', (event) => {
     switch (event.target.id) {
-        case 'set-timer': setTimer();
+        case 'timer-set': setTimer();
         break;
-        case 'reset-timer': resetTimer();
+        case 'timer-reset': resetTimer();
         break;
-        case 'start-stopwatch': stopwatch.start();
+        case 'stopwatch-start': stopwatch.start();
         break;
-        case 'pause-stopwatch': stopwatch.stop();
+        case 'stopwatch-pause': stopwatch.stop();
         break;
-        case 'reset-stopwatch': stopwatch.reset();
+        case 'stopwatch-reset': stopwatch.reset();
         break;
     }
 })

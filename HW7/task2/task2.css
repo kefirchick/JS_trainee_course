@@ -63,16 +63,6 @@ input {
     width: 120px;
 }
 
-input::-webkit-inner-spin-button,
-input::-webkit-outer-spin-button {
-    -webkit-appearance: none; /* Remove in Chrome, Safari */
-    margin: 0; /* Prevent layout issues */
-}
-
-.styled-number-input[type=number] {
-    -moz-appearance: textfield; /* Remove in Firefox */
-}
-
 .timer {
     background-color: var(--darkblue-color);
     display: inline-block;
