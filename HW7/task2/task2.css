@@ -44,10 +44,7 @@ body {
     margin: 10px;
     padding: 5px;
     width: 120px;
-}
-
-.button:hover {
-    cursor: pointer;
+    flex-shrink: 0;
 }
 
 input {
@@ -60,25 +57,36 @@ input {
     background-color: var(--light-color);
     margin: 10px;
     padding: 5px;
-    width: 120px;
+    width: 80px;
 }
 
 .timer {
     background-color: var(--darkblue-color);
-    display: inline-block;
     width: 50%;
 }
 
 .timer .button {
     background-color: var(--blue-color);
+    border: 2px solid var(--blue-color);
 }
 
 .stopwatch {
     background-color: var(--darkcyan-color);
-    display: inline-block;
     width: 50%;
 }
 
 .stopwatch .button {
     background-color: var(--cyan-color);
+    border: 2px solid var(--cyan-color);
+}
+
+.button:hover {
+    cursor: pointer;
+    border: 2px solid var(--light-color);
+}
+
+.button:active {
+    cursor: pointer;
+    border: 2px solid var(--light-color);
+    box-shadow: 0 0 10px var(--light-color);
 }

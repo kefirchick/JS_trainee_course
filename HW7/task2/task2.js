@@ -1,14 +1,19 @@
+const SEC_PER_MIN = 60;
+const MAX_TIME = 3599;
+
 class TimeDisplay{
+    #displayElement;
+    
     constructor(displayElement) {
-        this._displayElement = displayElement;
+        this.#displayElement = displayElement;
     }
 
     printTime(time) {
-        const min = Math.floor(time / 60);
-        const sec = time % 60;
+        const min = Math.floor(time / SEC_PER_MIN);
+        const sec = time % SEC_PER_MIN;
         const minStr = this.toTwoDigits(min);
         const secStr = this.toTwoDigits(sec);
-        this._displayElement.textContent = `${minStr}:${secStr}`;
+        this.#displayElement.textContent = `${minStr}:${secStr}`;
     }
 
     toTwoDigits(number) {
@@ -17,46 +22,53 @@ class TimeDisplay{
 }
 
 class StopwatchController {
+    #display;
+    #time;
+    #timerId;
+
     constructor() {
         const displayElement = document.getElementById('stopwatch-value');
-        this._display = new TimeDisplay(displayElement);
-        this._time = 0;
-        this._timerId = null;
+        this.#display = new TimeDisplay(displayElement);
+        this.#time = 0;
+        this.#timerId = null;
     }
 
     start() {
-        if (!this._timerId) {
-            this._timerId = setInterval(() => {
+        if (!this.#timerId) {
+            this.#timerId = setInterval(() => {
                 this.tick();
             }, 1000)
         }
     }
 
     stop() {
-        clearInterval(this._timerId);
-        this._timerId = null;
+        clearInterval(this.#timerId);
+        this.#timerId = null;
     }
 
     reset() {
         this.stop();
-        this._time = 0;
-        this._display.printTime(this._time);
+        this.#time = 0;
+        this.#display.printTime(this.#time);
     }
 
     tick() {
-        if (this._time === 3599) {
+        if (this.#time === MAX_TIME) {
             this.stop();
         }
 
-        this._time++;
-        this._display.printTime(this._time);
+        this.#time++;
+        this.#display.printTime(this.#time);
     }
 }
 
 class InputHandler {
+    #inputElement;
+    #lastValue;
+
     constructor(inputElement) {
-        this._inputElement = inputElement;
-        this._lastValue = 0;
+        this.#inputElement = inputElement;
+        this.#lastValue = 0;
         inputElement.value = 0;
         inputElement.addEventListener('input', () => {
             this.checkInput();
@@ -64,80 +76,83 @@ class InputHandler {
     }
 
     checkInput() {
-        const inputText = this._inputElement.value;
+        const inputText = this.#inputElement.value;
         const inputValue = Number(inputText);
 
         if (this.isValid(inputValue)) {
-            this._lastValue = inputValue;
+            this.#lastValue = inputValue;
         } else {
-            this._inputElement.value = this._lastValue;
+            this.#inputElement.value = this.#lastValue;
         }
     }
 
     isValid(number) {
-        return Number.isInteger(number) && number >= 0 && number < 60;
+        return Number.isInteger(number) && number >= 0 && number < SEC_PER_MIN;
     }
 
     getValue() {
-        return this._lastValue;
+        return this.#lastValue;
     }
 
     reset() {
-        this._lastValue = 0;
-        this._inputElement.value = 0;
+        this.#lastValue = 0;
+        this.#inputElement.value = 0;
     }
 }
 
 class TimerController {
+    #display;
+    #minHandler;
+    #secHandler;
+    #time;
+    #timerId;
+
     constructor() {
         const displayElement = document.getElementById('timer-value');
-        this._display = new TimeDisplay(displayElement);
+        this.#display = new TimeDisplay(displayElement);
         const inputMin = document.getElementById('input-minutes');
-        this._minHandler = new InputHandler(inputMin);
+        this.#minHandler = new InputHandler(inputMin);
         const inputSec = document.getElementById('input-seconds');
-        this._secHandler = new InputHandler(inputSec);
-        this._time = 0;
-        this._timerId = null;
+        this.#secHandler = new InputHandler(inputSec);
+        this.#time = 0;
+        this.#timerId = null;
     }
 
     setTimer() {
-        this._time = this._minHandler.getValue() * 60 + this._secHandler.getValue();
-        this._display.printTime(this._time);
+        this.#time = this.#minHandler.getValue() * SEC_PER_MIN + this.#secHandler.getValue();
+        this.#display.printTime(this.#time);
 
-        if (!this._timerId) {
-            this._timerId = setInterval(() => {
+        if (!this.#timerId) {
+            this.#timerId = setInterval(() => {
                 this.tick();
             }, 1000)
         }
     }
 
     tick() {
-        if (this._time === 0) {
+        if (this.#time === 0) {
             this.clearTimer();
         } else {
-            this._time--;
-            this._display.printTime(this._time);
+            this.#time--;
+            this.#display.printTime(this.#time);
         }
     }
 
     reset() {
         this.clearTimer();
-        this._time = 0;
-        this._display.printTime(this._time);
-        this._minHandler.reset();
-        this._secHandler.reset();
+        this.#time = 0;
+        this.#display.printTime(this.#time);
+        this.#minHandler.reset();
+        this.#secHandler.reset();
     }
 
     clearTimer() {
-        clearInterval(this._timerId);
-        this._timerId = null;
+        clearInterval(this.#timerId);
+        this.#timerId = null;
     }
 }
 
-const timer = new TimerController();
-const stopwatch = new StopwatchController();
-
-document.addEventListener('click', (event) => {
+function buttonsHandle(event) {
     switch (event.target.id) {
         case 'timer-set': timer.setTimer();
         break;
@@ -150,4 +165,9 @@ document.addEventListener('click', (event) => {
         case 'stopwatch-reset': stopwatch.reset();
         break;
     }
-})
+}
+
+const timer = new TimerController();
+const stopwatch = new StopwatchController();
+document.addEventListener('click', buttonsHandle);
+
